@@ -14,9 +14,7 @@ app.use(passport.session());
 app.use(express.static(path.join(__dirname, 'client/public')));
 
 passport.serializeUser((id, cb) => {
-    UserDetails.findById(id, (err, user) => {
-        cb(err, user);
-    });
+  cb(null, user.id);
 });
 
 passport.deserializeUser((id, cb) => {
@@ -29,14 +27,22 @@ passport.deserializeUser((id, cb) => {
 });
 
 const mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/MyDatabase');
+mongoose.connect('mongodb+srv://guest:thisisapassword@hackathon-db-jf8oa.gcp.mongodb.net/test?retryWrites=true&w=majority');
 
 const Schema = mongoose.Schema;
 const UserDetail = new Schema({
-      username: String,
-      password: String
-    });
-const UserDetails = mongoose.model('userInfo', UserDetail, 'userInfo');
+  username: String,
+  password: String
+});
+
+const ChirpDetail = new Schema({
+    title: String,
+    text: String,
+    user: String
+});
+
+const UserDetails = mongoose.model('chirperUserInfo', UserDetail, 'chirperUserInfo');
+const ChirpDetails = mongoose.model("chirperChirpInfo", ChirpDetail, 'chirperChirpInfo');
 
 const LocalStrategy = require("passport-local");
 passport.use(new LocalStrategy(
@@ -62,11 +68,27 @@ passport.use(new LocalStrategy(
 
 app.get('/success', (req, res) => res.send("Welcome "+req.query.username+"!!"));
 app.get('/error', (req, res) => res.send("error logging in"));
+app.get('/feed', (req, res) => {
+  ChirpDetails.find((err, result) => {
+    res.send(JSON.stringify(result.join()));
+  });
+});
+
+app.post('/feed', (req, res) => {
+  ChirpDetails.insertMany([{'title':req.title, 'text':req.text, 'user':req.user}],
+    (err, docs) => {
+      if (err) {
+        res.send(err);
+      }
+
+      res.send(JSON.stringify(docs));
+    });
+});
 
 app.post('/',
   passport.authenticate('local', { failureRedirect: '/error' }),
   function(req, res) {
-    res.redirect('/success?username='+req.user.username);
+    res.redirect('/feed?username='+req.user.username);
   });
 
 
