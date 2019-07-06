@@ -1,3 +1,13 @@
 .App {
+  align-items: center;
   text-align: center;
+}
+
+.chirp {
+  max-width: 345;
+}
+
+.post-chirp {
+  max-width: 345;
+  max-height: 200;
 }

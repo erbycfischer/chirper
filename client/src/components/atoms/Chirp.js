@@ -6,7 +6,20 @@ import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 
 class Chirp extends React.Component {
+      
     render() {
+
+        // const useStyles = makeStyles({
+        //     card: {
+        //       maxWidth: 345,
+        //     },
+        //     media: {
+        //       height: 140,
+        //     },
+        //   });
+
+        //   const classes = useStyles();
+
         return (
             <Card className="chirp" style={{maxWidth: 345}}>
             <CardActionArea>
@@ -22,7 +35,8 @@ class Chirp extends React.Component {
                 </Typography>
               </CardContent>
             </CardActionArea>
-</Card>
+        </Card>
+
         )
     }
   }

@@ -10,11 +10,10 @@ class Feed extends React.Component {
             chirps: []
         }
 
-        this.chirps = [];
+        this.element_chirps = [];
     }
     componentDidMount() {
-        fetch("http://localhost:8080/feed")
-            .then(res => res.json())
+        fetch("http://localhost:8080/feed", {mode: 'cors'})
             .then(res => {
                 //console.log(res);
                 this.setState({
@@ -24,6 +23,7 @@ class Feed extends React.Component {
                 this.state.chirps.forEach(value => {
                     this.chirps.push(<Chirp key={value.id} title={value.title} text={value.text} user={value.user} />);
                 });
+
             });
     }
 
