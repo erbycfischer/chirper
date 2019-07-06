@@ -14,7 +14,7 @@ app.use(passport.session());
 app.use(express.static(path.join(__dirname, 'client/public')));
 
 passport.serializeUser((id, cb) => {
-  cb(null, user.id);
+  cb(null, id);
 });
 
 passport.deserializeUser((id, cb) => {
@@ -70,7 +70,7 @@ app.get('/success', (req, res) => res.send("Welcome "+req.query.username+"!!"));
 app.get('/error', (req, res) => res.send("error logging in"));
 app.get('/feed', (req, res) => {
   ChirpDetails.find((err, result) => {
-    res.send(JSON.stringify(result.join()));
+    res.send(JSON.stringify(result));
   });
 });
 

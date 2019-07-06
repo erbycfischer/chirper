@@ -16,21 +16,22 @@ class Feed extends React.Component {
         fetch("http://localhost:8080/feed")
             .then(res => res.json())
             .then(res => {
+                //console.log(res);
                 this.setState({
-                    chirps: JSON.parse(res)
+                    chirps: res
                 })
+            }).then((res) => {
+                this.state.chirps.forEach(value => {
+                    this.chirps.push(<Chirp key={value.id} title={value.title} text={value.text} user={value.user} />);
+                });
             });
-        
-        this.state.chirps.forEach(value => {
-            this.chirps.push(<Chirp key={value} title={value.title} text={value.text} user={value.user} />);
-        });
     }
 
     render() {
         return (
             <div className="feed">
                 <PostChirp key="1" />
-                {this.chirps}
+                {this.state.chirps.map(value => <Chirp key={value.id} title={value.title} text={value.text} user={value.user} />)}
             </div>
         );
     }
