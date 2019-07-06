@@ -1,5 +1,4 @@
 import React from 'react';
-import './App.css';
 import SignIn from './molecules/SignIn';
 import SignUp from './molecules/SignUp';
 import Feed from './molecules/Feed';

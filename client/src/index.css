@@ -11,3 +11,12 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+.chirp {
+  max-width: 345;
+}
+
+.post-chirp {
+  max-width: 345;
+  max-height: 200;
+}

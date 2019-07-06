@@ -1,5 +1,6 @@
 const express = require('express');
 const path = require('path');
+const cors = require('cors');
 
 const passport = require('passport');
 const bodyParser = require('body-parser');
@@ -33,7 +34,7 @@ const Schema = mongoose.Schema;
 const UserDetail = new Schema({
   username: String,
   password: String
-});
+}, { collection: "chirperUserInfo"});
 
 const ChirpDetail = new Schema({
     title: String,
@@ -66,15 +67,14 @@ passport.use(new LocalStrategy(
     }
   ));
 
+app.use(cors());
 app.get('/success', (req, res) => res.send("Welcome "+req.query.username+"!!"));
 app.get('/error', (req, res) => res.send("error logging in"));
 app.get('/feed', (req, res) => {
-  ChirpDetails.find((err, result) => {
-    res.send(JSON.stringify(result.join()));
-  });
+  res.send(JSON.stringify(ChirpDetails.find().exec()));
 });
 
-app.post('/feed', (req, res) => {
+app.post('/feed', cors(), (req, res) => {
   ChirpDetails.insertMany([{'title':req.title, 'text':req.text, 'user':req.user}],
     (err, docs) => {
       if (err) {
